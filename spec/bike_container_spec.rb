@@ -34,6 +34,31 @@ describe BikeContainer  do
     expect(lambda {holder.dock(bike) }).to raise_error(RuntimeError)
   end
 
+  it 'should only dock the first bike if more than one given' do
+    holder.dock(bike, :second_thing, :third_thing)
+    expect(holder.bike_count).to eq(1)
+  end
+
+  it 'should not allow you to dock something that is not a bike' do
+     expect(lambda {holder.dock(:not_a_bike)}).to raise_error(RuntimeError) 
+     expect(lambda {holder.dock()}).to raise_error(RuntimeError) 
+
+  end
+
+  it "should not release a bike which isn't there" do
+    expect(lambda { holder.release(bike) }).to raise_error(RuntimeError)
+  end
+
+  it 'should raise an error if empty argument passed to release' do
+    expect(lambda { holder.release()}).to raise_error(RuntimeError)  
+  end
+
+  it 'should only release first bike if more than one requested' do
+    holder.dock(bike)
+    holder.release(bike, :second_thing, :third_thing)
+    expect(holder.bike_count).to eq(0)
+  end
+
   it "should provide a list of available bikes" do
     working_bike, broken_bike = Bike.new, Bike.new
     broken_bike.break!

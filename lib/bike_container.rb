@@ -18,13 +18,21 @@ DEFAULT_CAPACITY = 20
     bikes.count
   end
 
-  def dock(bike)
+  def dock(*bike)
+    raise "Cannot process request" if bike.first.class != Bike
     raise "Station is full" if full?
-    bikes << bike
+    bikes << bike.first
   end
 
-  def release(bike)
-    bikes.delete(bike)
+  def release(*bike)
+ #   raise "Please select bike" if bike == :empty
+    raise "Cannot process request" if bikes.delete(bike.first).nil?
+    #if bikes.include?(bike)
+    #  bikes.delete(bike)
+    #else
+    #  raise "Bike not there"
+    #end
+
   end
 
   def full?
