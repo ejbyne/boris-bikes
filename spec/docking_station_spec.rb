@@ -2,25 +2,30 @@ require 'docking_station'
 
 describe DockingStation do
   
-  let(:bike) { Bike.new }
   let(:station) { DockingStation.new(:capacity => 20) }
+  let(:bike) { Bike.new }
+  let(:van) { Van.new }
 
-  it "should be able to accept a bike" do
-    expect(station.bike_count).to eq(0)
-    station.dock(bike)
-    expect(station.bike_count).to eq(1)
+  it "should allow setting initial capacity on initializing" do
+    expect(station.capacity).to eq(20)
   end
 
-  it "should be able to release a bike" do
-    station.dock(bike)
-    station.release(bike)
-    expect(station.bike_count).to eq(0)
-  end
+  # it "can transfer bikes to the van" do
+  #   station.dock(Bike.new)
+  #   station.dock(Bike.new)
+  #   station.dock(Bike.new)
+  #   expect(station.bike_count).to eq(3)
+  #   station.transfer_to(van)
+  #   # expect(station.bike_count).to eq(0)
+  #   expect(van.bike_count).to eq(3)
+  # end
 
-  it "should know when it's full" do
-    expect(station).not_to be_full
-    20.times { station.dock(Bike.new) }
-    expect(station).to be_full
-  end
+  # it "can transfer broken bikes to van" do
+  #   bike.break!
+  #   station.dock(bike)
+  #   station.transfer_to(van, station.unavailable_bikes)
+  #   expect(station.bike_count).to eq(0)
+  #   expect(van.bike_count).to eq(1)
+  # end
 
 end
