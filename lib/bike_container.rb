@@ -18,13 +18,14 @@ module BikeContainer
     bikes.count
   end
 
-  def dock(bike)
+  def dock(*bike)
+    raise "Cannot process request" if bike.first.class != Bike
     raise "Station is full" if full?
-    bikes << bike
+    bikes << bike.first
   end
 
-  def release(bike)
-    bikes.delete(bike)
+  def release(*bike)
+    raise "Cannot process request" if bikes.delete(bike.first).nil?
   end
 
   def full?
@@ -32,7 +33,7 @@ module BikeContainer
   end
 
   def available_bikes
-    bikes.reject(&:broken?)
+    bikes.reject(&:broken?) #{ |bike| bike.broken? }
   end
 
   def unavailable_bikes
@@ -40,20 +41,14 @@ module BikeContainer
   end
 
   def transfer_to(other_container, selected_bikes)
-    selected_bikes.each { |selected_bike| release(selected_bike) }
+    # x = selected_bikes.count
+    # y = bike_count
+    selected_bikes.each do |selected_bike|
+      release(selected_bike) unless other_container.full?
+      other_container.dock(selected_bike) unless other_container.full?
+    end
+    # z = bike_count
+    # puts "#{y - z} out of #{x} bikes transferred"
   end
-
-  # def transfer_to(other_container, selected_bikes)
-  #   #x = selected_bikes.count
-  #   #y = self.bike_count
-  #   selected_bikes.each do |selected_bike|
-  #     bikes.delete(selected_bike)
-  #     other_container.dock(selected_bike)
-  #     # release(selected_bike) #unless other_container.full?
-  #     # other_container.dock(selected_bike) # unless other_container.full?
-  #   end
-  #   #z = self.bike_count
-  #   #puts "#{y - z} out of #{x} bikes transferred"
-  # end
 
 end
