@@ -40,15 +40,21 @@ module BikeContainer
     bikes.select(&:broken?) #{|bike| bike.broken? }
   end
 
+  # def transfer_to(other_container, selected_bikes)
+  #   # x = selected_bikes.count
+  #   # y = bike_count
+  #   selected_bikes.each do |selected_bike|
+  #     release(selected_bike) unless other_container.full?
+  #     other_container.dock(selected_bike) unless other_container.full?
+  #   end
+  #   # z = bike_count
+  #   # puts "#{y - z} out of #{x} bikes transferred"
+  # end
+
   def transfer_to(other_container, selected_bikes)
-    # x = selected_bikes.count
-    # y = bike_count
-    selected_bikes.each do |selected_bike|
-      release(selected_bike) unless other_container.full?
-      other_container.dock(selected_bike) unless other_container.full?
+    selected_bikes.reverse_each do |bike|
+      self.release(bike) if other_container.dock(bike) 
     end
-    # z = bike_count
-    # puts "#{y - z} out of #{x} bikes transferred"
   end
 
 end
