@@ -4,13 +4,11 @@ class ContainerHolder; include BikeContainer; end
 
 describe BikeContainer do
   
-  let(:bike) { Bike.new }
   let(:holder) { ContainerHolder.new }
-  let(:docking_station) { DockingStation.new(:capacity => 10) }
-  let(:van) { Van.new(:capacity => 5) }
+  let(:bike) { double :bike, broken?: false }
 
   def fill_holder(holder)
-    10.times { holder.dock(Bike.new) }
+    10.times { holder.dock(bike) }
   end
 
   it "should be able to accept a bike" do
@@ -37,11 +35,11 @@ describe BikeContainer do
   end
 
   it "should provide a list of available bikes" do
-    working_bike, broken_bike = Bike.new, Bike.new
-    broken_bike.break!
-    holder.dock(working_bike)
+    broken_bike = double :bike, broken?: true
+    holder.dock(bike)
     holder.dock(broken_bike)
-    expect(holder.available_bikes).to eq([working_bike])
+    expect(holder.available_bikes).to eq([bike])
+    expect(holder.unavailable_bikes).to eq([broken_bike])
   end
 
   it "should not release a bike which isn't there" do
@@ -49,19 +47,12 @@ describe BikeContainer do
   end
 
   it "can transfer bikes to other container" do
-    3.times { docking_station.dock(Bike.new) }
-    expect(docking_station.bike_count).to eq(3)
-    docking_station.transfer_to(van, docking_station.bikes)
-    expect(docking_station.bike_count).to eq(0)
-    expect(van.bike_count).to eq(3)
-  end
-
-  it "cannot transfer more bikes than other container's capacity" do
-    6.times { docking_station.dock(Bike.new) }
-    expect(docking_station.bike_count).to eq(6)
-    expect(lambda { docking_station.transfer_to(van, docking_station.bikes) }).to raise_error('Station is full')
-    expect(docking_station.bike_count).to eq(1)
-    expect(van.bike_count).to eq(5)
+    van = ContainerHolder.new
+    holder.dock(bike)
+    expect(holder.bike_count).to eq(1)
+    holder.transfer_to(van, holder.bikes)
+    expect(holder.bike_count).to eq(0)
+    expect(van.bike_count).to eq(1)
   end
 
 end
