@@ -38,8 +38,8 @@ describe BikeContainer do
     broken_bike = double :bike, broken?: true
     holder.dock(bike)
     holder.dock(broken_bike)
-    expect(holder.available_bikes).to eq([bike])
-    expect(holder.unavailable_bikes).to eq([broken_bike])
+    expect(holder.available_bikes.count).to eq(1)
+    expect(holder.unavailable_bikes.count).to eq(1)
   end
 
   it "should not release a bike which isn't there" do
