@@ -1,10 +1,8 @@
 require 'bike_container'
 
-class ContainerHolder; include BikeContainer; end
-
-describe BikeContainer do
+shared_examples "a bike container" do
   
-  let(:holder) { ContainerHolder.new }
+  let(:holder) { described_class.new }
   let(:bike) { double :bike, broken?: false }
 
   def fill_holder(holder)
@@ -47,7 +45,7 @@ describe BikeContainer do
   end
 
   it "can transfer bikes to other container" do
-    van = ContainerHolder.new
+    van = described_class.new
     holder.dock(bike)
     expect(holder.bike_count).to eq(1)
     holder.transfer_to(van, holder.bikes)

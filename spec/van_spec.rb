@@ -1,6 +1,8 @@
 require 'van'
 
 describe Van do
+
+  it_behaves_like "a bike container"
   
   let(:van) { Van.new(:capacity => 15) }
 
