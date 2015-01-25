@@ -1,11 +1,10 @@
-Boris Bikes
-=======================
+# Boris Bikes
 
-## Synopsis
+## Summary
 
 This was our Week 1 project at Makers Academy.
 
-The task was to create a simple system for managing Boris Bikes in London.
+The task was to create a simple system for managing Boris Bikes in London in Ruby.
 
 ## Technologies Used
 
