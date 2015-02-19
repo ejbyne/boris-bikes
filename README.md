@@ -36,7 +36,7 @@ $ cd boris-bikes
 $ rspec
 ```
 
-## Favourite Code Snippet
+## Favourite code snippet
 
 Method for transferring bikes between vans/docking stations etc:
 ```ruby
