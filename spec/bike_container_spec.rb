@@ -1,3 +1,4 @@
+require 'spec_helper'
 require 'bike_container'
 
 shared_examples "a bike container" do
